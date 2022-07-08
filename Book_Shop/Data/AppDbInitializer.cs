@@ -35,13 +35,12 @@ namespace Book_Shop.Data
                         Title = "2nd Book Title",
                         Description = "Second Book Description",
                         IsRead = false,
-                        Rate = 4,
                         Genre = "Biography",
                         Author = "Second Author",
                         CoverUrl = "https://wwww.mysecondbookshop.com",
                         CreatedAt = DateTime.UtcNow
-
-                    }); 
+                    });
+                    context.SaveChanges();
 
                 }
             }

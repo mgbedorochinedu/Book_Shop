@@ -108,6 +108,7 @@ namespace Book_Shop
             {
                 endpoints.MapControllers();
             });
+            AppDbInitializer.DataSeeding(app);
         }
     }
 }
