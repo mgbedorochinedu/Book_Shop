@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Book_Shop.Data;
+using Book_Shop.Services.BookService;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Shop
@@ -29,17 +30,20 @@ namespace Book_Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<AppDbContext>(x =>
+                x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
 
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Book_Shop", Version = "v1" });
-            //});
+            //Configure the Services
+            services.AddScoped<IBookService, BookService>();
 
-            services.AddDbContext<AppDbContext>(x =>
 
-         x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+
+
+
 
 
             services.AddSwaggerGen(c =>
