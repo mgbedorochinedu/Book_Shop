@@ -33,6 +33,7 @@ namespace Book_Shop
             services.AddDbContext<AppDbContext>(x =>
                 x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
 
             //Configure the Services
             services.AddScoped<IBookService, BookService>();

@@ -6,6 +6,8 @@ using AutoMapper;
 using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos;
+using Book_Shop.Dtos.Book;
+using Microsoft.EntityFrameworkCore;
 
 namespace Book_Shop.Services.BookService
 {
@@ -20,7 +22,7 @@ namespace Book_Shop.Services.BookService
             _mapper = mapper;
         }
 
-
+        //AddBook
         public async Task<ResponseMessage<BookDto>> AddBook(BookDto newBook)
         {
             ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
@@ -56,15 +58,25 @@ namespace Book_Shop.Services.BookService
             return response;
         }
 
-        public async Task<ResponseMessage<IList<BookDto>>> GetAllBooks()
+        //Get All Books
+        public async Task<ResponseMessage<List<BookDto>>> GetAllBooks()
         {
 
-            ResponseMessage<IList<BookDto>> response = new ResponseMessage<IList<BookDto>>();
+            ResponseMessage<List<BookDto>> response = new ResponseMessage<List<BookDto>>();
             try
             {
-                //Book book = _db.Books
-
-
+                List<Book> book = await _db.Books.ToListAsync();
+                if (book != null)
+                {
+                    response.Data = _mapper.Map<List<BookDto>>(book);
+                    response.IsSuccess = true;
+                    response.Message = "Successfully fetched all books";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Books not found";
+                }
             }
             catch (Exception ex)
             {
@@ -75,9 +87,77 @@ namespace Book_Shop.Services.BookService
             return response;
         }
 
-        public Task<ResponseMessage<BookDto>> GetBookById(int id)
+        //Get Book By Id
+        public async Task<ResponseMessage<BookDto>> GetBookById(int id)
         {
-            throw new NotImplementedException();
+            ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
+            try
+            {
+                Book book = await _db.Books.Where(x => x.Id == id).FirstOrDefaultAsync();
+                if (book != null)
+                {
+                    response.Data = _mapper.Map<BookDto>(book);
+                    response.IsSuccess = true;
+                    response.Message = "Successfully fetched all books";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Books not found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
         }
+
+        //Update Book
+        public async Task<ResponseMessage<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook)
+        {
+            ResponseMessage<UpdateBookDto> response = new ResponseMessage<UpdateBookDto>();
+            try
+            {
+                Book book = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
+                if (book != null)
+                {
+                    book.Title = updateBook.Title;
+                    book.Description = updateBook.Description;
+                    book.IsRead = updateBook.IsRead;
+                    book.DateRead = updateBook.IsRead ? updateBook.DateRead.Value : new DateTime?();
+                    book.Rate = updateBook.IsRead ? updateBook.Rate.Value : (int?) null;
+                    book.Genre = updateBook.Genre;
+                    book.Author = updateBook.Author;
+                    book.CoverUrl = updateBook.CoverUrl;
+                    book.ModifiedAt = DateTime.UtcNow;
+
+                    _db.Books.Update(book);
+                    await _db.SaveChangesAsync();
+
+                    response.Data = _mapper.Map<UpdateBookDto>(book);
+                    response.IsSuccess = true;
+                    response.Message = "Book updated successfully.";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Book not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+
+
+
     }
 }

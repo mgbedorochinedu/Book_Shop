@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos;
+using Book_Shop.Dtos.Book;
 
 namespace Book_Shop.Services.BookService
 {
@@ -12,8 +13,10 @@ namespace Book_Shop.Services.BookService
     {
         Task<ResponseMessage<BookDto>> AddBook(BookDto newBook);
 
-        Task<ResponseMessage<IList<BookDto>>> GetAllBooks();
+        Task<ResponseMessage<List<BookDto>>> GetAllBooks();
 
         Task<ResponseMessage<BookDto>> GetBookById(int id);
+
+        Task<ResponseMessage<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook);
     }
 }
