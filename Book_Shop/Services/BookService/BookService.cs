@@ -156,8 +156,36 @@ namespace Book_Shop.Services.BookService
             return response;
         }
 
+        //Delete Book
+        public async Task<ResponseMessage<BookDto>> DeleteBook(int id)
+        {
+            ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
+            try
+            {
+                Book book = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
+                if (book != null)
+                {
+                    _db.Books.Remove(book);
+                    await _db.SaveChangesAsync();
 
+                    response.Data = _mapper.Map<BookDto>(book);
+                    response.IsSuccess = true;
+                    response.Message = "Deleted successfully";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Book not found.";
+                }
 
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
 
+            return response;
+        }
     }
 }

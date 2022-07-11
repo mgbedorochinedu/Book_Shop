@@ -18,5 +18,7 @@ namespace Book_Shop.Services.BookService
         Task<ResponseMessage<BookDto>> GetBookById(int id);
 
         Task<ResponseMessage<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook);
+
+        Task<ResponseMessage<BookDto>> DeleteBook(int id);
     }
 }
