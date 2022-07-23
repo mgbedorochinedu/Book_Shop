@@ -19,5 +19,9 @@ namespace Book_Shop.Data.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
+        //Navigation properties
+        public int PublisherId { get; set; }
+        public Publisher Publisher { get; set; }
+        
     }
 }

@@ -14,6 +14,7 @@ namespace Book_Shop.Data
 
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
 
     }
 }
