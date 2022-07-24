@@ -19,9 +19,13 @@ namespace Book_Shop.Data.Models
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        //Navigation properties
+
+        //Navigation properties - One to many
         public int PublisherId { get; set; }
         public Publisher Publisher { get; set; }
-        
+
+        // Many to many
+        public List<Book_Author> Book_Authors { get; set; }
+
     }
 }
