@@ -16,6 +16,7 @@ using Book_Shop.Data;
 using Book_Shop.Services.AuthorService;
 using Book_Shop.Services.BookService;
 using Book_Shop.Services.PublisherService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Shop
@@ -41,6 +42,7 @@ namespace Book_Shop
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IPublisherService, PublisherService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 

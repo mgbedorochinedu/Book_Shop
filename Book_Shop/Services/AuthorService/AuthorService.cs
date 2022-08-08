@@ -20,9 +20,9 @@ namespace Book_Shop.Services.AuthorService
             _mapper = mapper;
         }
 
-        public async Task<ResponseMessage<AuthorDto>> AddAuthor(AuthorDto newAuthor)
+        public async Task<MessageResponse<AuthorDto>> AddAuthor(AuthorDto newAuthor)
         {
-            ResponseMessage<AuthorDto> response = new ResponseMessage<AuthorDto>();
+            MessageResponse<AuthorDto> response = new MessageResponse<AuthorDto>();
 
             try
             {
@@ -40,7 +40,7 @@ namespace Book_Shop.Services.AuthorService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = "Something went wrong";
+                response.Message = $"Something went wrong on {ex.Message}";
             }
 
             return response;

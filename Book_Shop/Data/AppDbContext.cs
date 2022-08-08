@@ -30,7 +30,7 @@ namespace Book_Shop.Data
             modelBuilder.Entity<Book_Author>()
                 .HasOne(b => b.Author)
                 .WithMany(ba => ba.Book_Authors)
-                .HasForeignKey(bi => bi.AuthorId);
+                .HasForeignKey(ai => ai.AuthorId);
         }
     }
 }

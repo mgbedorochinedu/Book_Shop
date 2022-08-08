@@ -25,7 +25,6 @@ namespace Book_Shop.Data
                         DateRead = DateTime.Now.AddDays(-10),
                         Rate = 4,
                         Genre = "Biography",
-                        Author = "First Author",
                         CoverUrl = "https://wwww.mybookshop.com",
                         CreatedAt = DateTime.UtcNow
 
@@ -36,7 +35,6 @@ namespace Book_Shop.Data
                         Description = "Second Book Description",
                         IsRead = false,
                         Genre = "Biography",
-                        Author = "Second Author",
                         CoverUrl = "https://wwww.mysecondbookshop.com",
                         CreatedAt = DateTime.UtcNow
                     });

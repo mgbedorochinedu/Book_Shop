@@ -16,24 +16,34 @@ namespace Book_Shop.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BooksController(IBookService bookService)
+        public BooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor)
         {
             _bookService = bookService;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        //IP Address
+        [HttpGet("ip-address")]
+        public IActionResult Index()
+        {
+            var ip = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+            return Content(ip);
         }
 
         //Add Book
-        [HttpPost]
+        [HttpPost("add-book-with-authors")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddBook([FromBody] BookDto request)
+        public async Task<IActionResult> AddBookWithAuthors([FromBody] BookDto request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var response = await _bookService.AddBook(request);
+            var response = await _bookService.AddBookWithAuthors(request);
             return Ok(response);
         }
 

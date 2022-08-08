@@ -23,9 +23,9 @@ namespace Book_Shop.Services.BookService
         }
 
         //AddBook
-        public async Task<ResponseMessage<BookDto>> AddBook(BookDto newBook)
+        public async Task<MessageResponse<BookDto>> AddBookWithAuthors(BookDto newBook)
         {
-            ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
+            MessageResponse<BookDto> response = new MessageResponse<BookDto>();
             try
             {
                 Book book = new Book()
@@ -36,33 +36,43 @@ namespace Book_Shop.Services.BookService
                     DateRead = newBook.IsRead ? newBook.DateRead.Value : new DateTime?(),
                     Rate = newBook.IsRead ? newBook.Rate.Value : (int?)null,
                     Genre = newBook.Genre,
-                    Author = newBook.Author,
                     CoverUrl = newBook.CoverUrl,
+                    PublisherId = newBook.PublisherId,
                     CreatedAt = DateTime.UtcNow
                 };
                 await _db.Books.AddAsync(book);
                 await _db.SaveChangesAsync();
 
+                foreach (var id in newBook.AuthorIds)
+                {
+                    var bookAuthor = new Book_Author()
+                    {
+                        BookId = book.Id,
+                        AuthorId = id
+                    };
+                    await _db.Books_Authors.AddAsync(bookAuthor);
+                    await _db.SaveChangesAsync();
+                }
+
                 response.Data = null;
                 response.IsSuccess = true;
-                response.Message = "Book added successfully";
-
+                response.Message = "Added Book with Authors successfully";
 
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = $"Something went wrong on {ex.Message}";
             }
 
             return response;
         }
 
         //Get All Books
-        public async Task<ResponseMessage<List<BookDto>>> GetAllBooks()
+        public async Task<MessageResponse<List<BookDto>>> GetAllBooks()
         {
 
-            ResponseMessage<List<BookDto>> response = new ResponseMessage<List<BookDto>>();
+            MessageResponse<List<BookDto>> response = new MessageResponse<List<BookDto>>();
             try
             {
                 List<Book> book = await _db.Books.ToListAsync();
@@ -88,9 +98,9 @@ namespace Book_Shop.Services.BookService
         }
 
         //Get Book By Id
-        public async Task<ResponseMessage<BookDto>> GetBookById(int id)
+        public async Task<MessageResponse<BookDto>> GetBookById(int id)
         {
-            ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
+            MessageResponse<BookDto> response = new MessageResponse<BookDto>();
             try
             {
                 Book book = await _db.Books.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -109,16 +119,16 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = $"Something went wrong on {ex.Message}";
             }
 
             return response;
         }
 
         //Update Book
-        public async Task<ResponseMessage<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook)
+        public async Task<MessageResponse<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook)
         {
-            ResponseMessage<UpdateBookDto> response = new ResponseMessage<UpdateBookDto>();
+            MessageResponse<UpdateBookDto> response = new MessageResponse<UpdateBookDto>();
             try
             {
                 Book book = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
@@ -130,7 +140,6 @@ namespace Book_Shop.Services.BookService
                     book.DateRead = updateBook.IsRead ? updateBook.DateRead.Value : new DateTime?();
                     book.Rate = updateBook.IsRead ? updateBook.Rate.Value : (int?) null;
                     book.Genre = updateBook.Genre;
-                    book.Author = updateBook.Author;
                     book.CoverUrl = updateBook.CoverUrl;
                     book.ModifiedAt = DateTime.UtcNow;
 
@@ -150,16 +159,16 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = $"Something went wrong on {ex.Message}";
             }
 
             return response;
         }
 
         //Delete Book
-        public async Task<ResponseMessage<BookDto>> DeleteBook(int id)
+        public async Task<MessageResponse<BookDto>> DeleteBook(int id)
         {
-            ResponseMessage<BookDto> response = new ResponseMessage<BookDto>();
+            MessageResponse<BookDto> response = new MessageResponse<BookDto>();
             try
             {
                 Book book = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
@@ -182,10 +191,11 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = $"Something went wrong on {ex.Message}";
             }
 
             return response;
         }
+
     }
 }

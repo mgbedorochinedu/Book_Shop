@@ -9,7 +9,7 @@ namespace Book_Shop.Services.PublisherService
 {
     public interface IPublisherService
     {
-        Task<ResponseMessage<PublisherDto>> AddPublisher(PublisherDto newPublisher);
+        Task<MessageResponse<PublisherDto>> AddPublisher(PublisherDto newPublisher);
 
     }
 }

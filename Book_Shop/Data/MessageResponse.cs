@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Book_Shop.Data
 {
-    public class ResponseMessage<T>
+    public class MessageResponse<T>
     {
         public T Data { get; set; }
         public string Message { get; set; } = null;

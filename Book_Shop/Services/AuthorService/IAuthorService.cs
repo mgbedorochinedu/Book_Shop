@@ -9,6 +9,6 @@ namespace Book_Shop.Services.AuthorService
 {
     public interface IAuthorService
     {
-        Task<ResponseMessage<AuthorDto>> AddAuthor(AuthorDto newAuthor);
+        Task<MessageResponse<AuthorDto>> AddAuthor(AuthorDto newAuthor);
     }
 }
