@@ -15,6 +15,7 @@ namespace Book_Shop
         {
             CreateMap<Book, BookDto>().ReverseMap();
             CreateMap<Book, UpdateBookDto>().ReverseMap();
+            CreateMap<Book, BookWithAuthorsDto>();
 
         }
 

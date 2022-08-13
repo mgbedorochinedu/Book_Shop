@@ -41,23 +41,23 @@ namespace Book_Shop.Services.BookService
                     CreatedAt = DateTime.UtcNow
                 };
                 await _db.Books.AddAsync(book);
-                await _db.SaveChangesAsync();
-
-                foreach (var id in newBook.AuthorIds)
+                var isSaved = await _db.SaveChangesAsync() > 0;
+                if (isSaved)
                 {
-                    var bookAuthor = new Book_Author()
+                    foreach (var id in newBook.AuthorIds)
                     {
-                        BookId = book.Id,
-                        AuthorId = id
-                    };
-                    await _db.Books_Authors.AddAsync(bookAuthor);
-                    await _db.SaveChangesAsync();
+                        var bookAuthor = new Book_Author()
+                        {
+                            BookId = book.Id,
+                            AuthorId = id
+                        };
+                        await _db.Books_Authors.AddAsync(bookAuthor);
+                        await _db.SaveChangesAsync();
+                    }
+                    response.Data = null;
+                    response.IsSuccess = true;
+                    response.Message = "Added Book with Authors successfully";
                 }
-
-                response.Data = null;
-                response.IsSuccess = true;
-                response.Message = "Added Book with Authors successfully";
-
             }
             catch (Exception ex)
             {
@@ -98,22 +98,35 @@ namespace Book_Shop.Services.BookService
         }
 
         //Get Book By Id
-        public async Task<MessageResponse<BookDto>> GetBookById(int id)
+        public async Task<MessageResponse<BookWithAuthorsDto>> GetBookById(int id)
         {
-            MessageResponse<BookDto> response = new MessageResponse<BookDto>();
+            MessageResponse<BookWithAuthorsDto> response = new MessageResponse<BookWithAuthorsDto>();
             try
             {
-                Book book = await _db.Books.Where(x => x.Id == id).FirstOrDefaultAsync();
-                if (book != null)
+                var dbBook = await _db.Books.Where(x => x.Id == id).Select(book => new BookWithAuthorsDto()
                 {
-                    response.Data = _mapper.Map<BookDto>(book);
+                    Title = book.Title,
+                    Description = book.Description,
+                    IsRead = book.IsRead,
+                    DateRead = book.IsRead ? book.DateRead.Value : new DateTime?(),
+                    Rate = book.IsRead ? book.Rate.Value : (int?) null,
+                    Genre = book.Genre,
+                    CoverUrl = book.CoverUrl,
+                    PublisherName = book.Publisher.Name,
+                    AuthorNames = book.Book_Authors.Select(a => a.Author.FullName).ToList()
+                }).FirstOrDefaultAsync();
+                    
+
+                if (dbBook != null)
+                {
+                    response.Data = _mapper.Map<BookWithAuthorsDto>(dbBook);
                     response.IsSuccess = true;
-                    response.Message = "Successfully fetched all books";
+                    response.Message = "Successfully fetch Book with Authors";
                 }
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Books not found";
+                    response.Message = "Book not found";
                 }
             }
             catch (Exception ex)

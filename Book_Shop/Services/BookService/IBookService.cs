@@ -15,7 +15,7 @@ namespace Book_Shop.Services.BookService
 
         Task<MessageResponse<List<BookDto>>> GetAllBooks();
 
-        Task<MessageResponse<BookDto>> GetBookById(int id);
+        Task<MessageResponse<BookWithAuthorsDto>> GetBookById(int id);
 
         Task<MessageResponse<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook);
 

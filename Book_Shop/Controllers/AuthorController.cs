@@ -26,7 +26,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddPublisher([FromBody] AuthorDto request)
+        public async Task<IActionResult> AddAuthor([FromBody] AuthorDto request)
         {
             if (!ModelState.IsValid)
             {
