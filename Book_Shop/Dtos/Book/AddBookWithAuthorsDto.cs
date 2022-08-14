@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Book_Shop.Dtos.Book
 {
-    public class BookWithAuthorsDto
+    public class AddBookWithAuthorsDto
     {
         public string Title { get; set; }
         public string Description { get; set; }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos;
+using Book_Shop.Dtos.Author;
 using Book_Shop.Dtos.Book;
 
 namespace Book_Shop
@@ -15,7 +16,8 @@ namespace Book_Shop
         {
             CreateMap<Book, BookDto>().ReverseMap();
             CreateMap<Book, UpdateBookDto>().ReverseMap();
-            CreateMap<Book, BookWithAuthorsDto>();
+            CreateMap<Book, AddBookWithAuthorsDto>().ReverseMap();
+            CreateMap<Author, GetAuthorWithBooks>().ReverseMap();
 
         }
 

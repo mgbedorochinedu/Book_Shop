@@ -32,7 +32,9 @@ namespace Book_Shop.Controllers
             return Content(ip);
         }
 
-        //Add Book
+        ///<summary>
+        ///Add Book with Authors
+        ///</summary>
         [HttpPost("add-book-with-authors")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +49,9 @@ namespace Book_Shop.Controllers
             return Ok(response);
         }
 
-        //Get All Books
+        ///<summary>
+        ///Get All Books
+        ///</summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllBooks()
@@ -56,19 +60,23 @@ namespace Book_Shop.Controllers
             return Ok(response);
         }
 
-        //Get Book by Id
+        ///<summary>
+        /// Get Book With Authors By Id
+        ///</summary>
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetBook(int id)
         {
-            var response = await _bookService.GetBookById(id);
+            var response = await _bookService.GetBookWithAuthorsById(id);
             if (response.Data == null || !response.IsSuccess)
                 return NotFound(response);
             return Ok(response);
         }
 
-        //Update Book
+        ///<summary>
+        /// Update Book
+        ///</summary>
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -80,7 +88,9 @@ namespace Book_Shop.Controllers
             return Ok(response);
         }
 
-        //Delete Book
+        ///<summary>
+        ///Delete Book
+        ///</summary>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id:int}")]

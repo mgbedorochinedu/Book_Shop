@@ -22,7 +22,9 @@ namespace Book_Shop.Services.BookService
             _mapper = mapper;
         }
 
-        //AddBook
+        ///<summary>
+        ///Add Book with Authors
+        ///</summary>
         public async Task<MessageResponse<BookDto>> AddBookWithAuthors(BookDto newBook)
         {
             MessageResponse<BookDto> response = new MessageResponse<BookDto>();
@@ -44,7 +46,7 @@ namespace Book_Shop.Services.BookService
                 var isSaved = await _db.SaveChangesAsync() > 0;
                 if (isSaved)
                 {
-                    foreach (var id in newBook.AuthorIds)
+                    foreach (int id in newBook.AuthorIds)
                     {
                         var bookAuthor = new Book_Author()
                         {
@@ -56,22 +58,23 @@ namespace Book_Shop.Services.BookService
                     }
                     response.Data = null;
                     response.IsSuccess = true;
-                    response.Message = "Added Book with Authors successfully";
+                    response.Message = "Successfully added Book with Authors";
                 }
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong on : {ex.Message}";
             }
 
             return response;
         }
 
-        //Get All Books
+        ///<summary>
+        ///Get All Books
+        ///</summary>
         public async Task<MessageResponse<List<BookDto>>> GetAllBooks()
         {
-
             MessageResponse<List<BookDto>> response = new MessageResponse<List<BookDto>>();
             try
             {
@@ -91,19 +94,21 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+                response.Message = $"Something went wrong on : {ex.Message}";
             }
 
             return response;
         }
 
-        //Get Book By Id
-        public async Task<MessageResponse<BookWithAuthorsDto>> GetBookById(int id)
+        ///<summary>
+        /// Get Book With Authors By Id
+        ///</summary>
+        public async Task<MessageResponse<AddBookWithAuthorsDto>> GetBookWithAuthorsById(int id)
         {
-            MessageResponse<BookWithAuthorsDto> response = new MessageResponse<BookWithAuthorsDto>();
+            MessageResponse<AddBookWithAuthorsDto> response = new MessageResponse<AddBookWithAuthorsDto>();
             try
             {
-                var dbBook = await _db.Books.Where(x => x.Id == id).Select(book => new BookWithAuthorsDto()
+                var dbBook = await _db.Books.Where(x => x.Id == id).Select(book => new AddBookWithAuthorsDto()
                 {
                     Title = book.Title,
                     Description = book.Description,
@@ -119,7 +124,7 @@ namespace Book_Shop.Services.BookService
 
                 if (dbBook != null)
                 {
-                    response.Data = _mapper.Map<BookWithAuthorsDto>(dbBook);
+                    response.Data = _mapper.Map<AddBookWithAuthorsDto>(dbBook);
                     response.IsSuccess = true;
                     response.Message = "Successfully fetch Book with Authors";
                 }
@@ -132,13 +137,15 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;
         }
 
-        //Update Book
+        ///<summary>
+        /// Update Book
+        ///</summary>
         public async Task<MessageResponse<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook)
         {
             MessageResponse<UpdateBookDto> response = new MessageResponse<UpdateBookDto>();
@@ -161,7 +168,7 @@ namespace Book_Shop.Services.BookService
 
                     response.Data = _mapper.Map<UpdateBookDto>(book);
                     response.IsSuccess = true;
-                    response.Message = "Book updated successfully.";
+                    response.Message = "Book updated successful.";
                 }
                 else
                 {
@@ -172,13 +179,15 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;
         }
 
-        //Delete Book
+        ///<summary>
+        ///Delete Book
+        ///</summary>
         public async Task<MessageResponse<BookDto>> DeleteBook(int id)
         {
             MessageResponse<BookDto> response = new MessageResponse<BookDto>();
@@ -192,19 +201,18 @@ namespace Book_Shop.Services.BookService
 
                     response.Data = _mapper.Map<BookDto>(book);
                     response.IsSuccess = true;
-                    response.Message = "Deleted successfully";
+                    response.Message = "Book deleted successful";
                 }
                 else
                 {
                     response.IsSuccess = false;
                     response.Message = "Book not found.";
                 }
-
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;

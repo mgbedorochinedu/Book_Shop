@@ -21,7 +21,9 @@ namespace Book_Shop.Controllers
         }
 
 
-        //Add Publisher
+        ///<summary>
+        ///Add Publisher
+        ///</summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]

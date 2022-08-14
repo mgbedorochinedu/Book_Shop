@@ -20,6 +20,9 @@ namespace Book_Shop.Services.PublisherService
             _mapper = mapper;
         }
 
+        ///<summary>
+        /// Add Publisher
+        ///</summary>
         public async Task<MessageResponse<PublisherDto>> AddPublisher(PublisherDto newPublisher)
         {
             MessageResponse<PublisherDto> response = new MessageResponse<PublisherDto>();
@@ -40,7 +43,7 @@ namespace Book_Shop.Services.PublisherService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;

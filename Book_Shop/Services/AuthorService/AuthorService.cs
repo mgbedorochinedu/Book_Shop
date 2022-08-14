@@ -6,6 +6,7 @@ using AutoMapper;
 using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos.Author;
+using Microsoft.EntityFrameworkCore;
 
 namespace Book_Shop.Services.AuthorService
 {
@@ -20,6 +21,9 @@ namespace Book_Shop.Services.AuthorService
             _mapper = mapper;
         }
 
+        ///<summary>
+        /// Add Author
+        ///</summary>
         public async Task<MessageResponse<AuthorDto>> AddAuthor(AuthorDto newAuthor)
         {
             MessageResponse<AuthorDto> response = new MessageResponse<AuthorDto>();
@@ -40,11 +44,47 @@ namespace Book_Shop.Services.AuthorService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;
+        }
 
+        ///<summary>
+        /// Get Author With Books By Id
+        ///</summary>
+        public async Task<MessageResponse<GetAuthorWithBooks>> GetAuthorWithBooks(int id)
+        {
+            MessageResponse<GetAuthorWithBooks> response = new MessageResponse<GetAuthorWithBooks>();
+            try
+            {
+                var dbAuthor = await _db.Authors
+                    .Where(x => x.Id == id).Select(author => new GetAuthorWithBooks()
+                {
+                    FullName = author.FullName,
+                    BookTitles = author.Book_Authors.Select(b => b.Book.Title).ToList()
+                }).FirstOrDefaultAsync();
+
+                if (dbAuthor != null)
+                {
+                    response.Data = _mapper.Map<GetAuthorWithBooks>(dbAuthor);
+                    response.IsSuccess = true;
+                    response.Message = "Successfully fetch Author with Books";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Author not found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Something went wrong : {ex.Message}";
+            }
+
+            return response;
         }
     }
 }
