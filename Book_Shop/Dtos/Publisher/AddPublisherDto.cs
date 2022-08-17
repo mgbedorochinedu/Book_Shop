@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Book_Shop.Dtos.Author
+namespace Book_Shop.Dtos.Publisher
 {
-    public class AuthorDto
+    public class AddPublisherDto
     {
-        public string FullName { get; set; }
+        public string Name { get; set; }
     }
 }

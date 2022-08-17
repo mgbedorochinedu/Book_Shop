@@ -28,7 +28,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddPublisher([FromBody] PublisherDto request)
+        public async Task<IActionResult> AddPublisher([FromBody] AddPublisherDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -36,6 +36,22 @@ namespace Book_Shop.Controllers
             }
             var response = await _publisherService.AddPublisher(request);
             return Ok(response);
+        }
+
+        ///<summary>
+        /// Get Publisher with Books and Authors by Id
+        ///</summary>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> PublisherWithBooksAndAuthors(int id)
+        {
+            var response = await _publisherService.GetPublisherWithBooksAndAuthors(id);
+            if (response == null)
+                return NotFound();
+            return Ok(response);
+
         }
 
 

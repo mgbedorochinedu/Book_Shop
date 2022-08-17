@@ -25,7 +25,7 @@ namespace Book_Shop.Services.BookService
         ///<summary>
         ///Add Book with Authors
         ///</summary>
-        public async Task<MessageResponse<BookDto>> AddBookWithAuthors(BookDto newBook)
+        public async Task<MessageResponse<BookDto>> AddBookWithAuthors(AddBookWithAuthorsDto newBook)
         {
             MessageResponse<BookDto> response = new MessageResponse<BookDto>();
             try
@@ -64,7 +64,7 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on : {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;
@@ -94,7 +94,7 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong on : {ex.Message}";
+                response.Message = $"Something went wrong : {ex.Message}";
             }
 
             return response;
@@ -103,12 +103,12 @@ namespace Book_Shop.Services.BookService
         ///<summary>
         /// Get Book With Authors By Id
         ///</summary>
-        public async Task<MessageResponse<AddBookWithAuthorsDto>> GetBookWithAuthorsById(int id)
+        public async Task<MessageResponse<GetBookWithAuthorsDto>> GetBookWithAuthorsById(int id)
         {
-            MessageResponse<AddBookWithAuthorsDto> response = new MessageResponse<AddBookWithAuthorsDto>();
+            MessageResponse<GetBookWithAuthorsDto> response = new MessageResponse<GetBookWithAuthorsDto>();
             try
             {
-                var dbBook = await _db.Books.Where(x => x.Id == id).Select(book => new AddBookWithAuthorsDto()
+                var dbBook = await _db.Books.Where(x => x.Id == id).Select(book => new GetBookWithAuthorsDto()
                 {
                     Title = book.Title,
                     Description = book.Description,
@@ -124,7 +124,7 @@ namespace Book_Shop.Services.BookService
 
                 if (dbBook != null)
                 {
-                    response.Data = _mapper.Map<AddBookWithAuthorsDto>(dbBook);
+                    response.Data = _mapper.Map<GetBookWithAuthorsDto>(dbBook);
                     response.IsSuccess = true;
                     response.Message = "Successfully fetch Book with Authors";
                 }

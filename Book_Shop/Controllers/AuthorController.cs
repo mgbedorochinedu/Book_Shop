@@ -27,7 +27,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddAuthor([FromBody] AuthorDto request)
+        public async Task<IActionResult> AddAuthor([FromBody] AddAuthorDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -43,6 +43,7 @@ namespace Book_Shop.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAuthorWithBooks(int id)
         {
             var response = await _authorService.GetAuthorWithBooks(id);

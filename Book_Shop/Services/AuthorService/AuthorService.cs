@@ -24,9 +24,9 @@ namespace Book_Shop.Services.AuthorService
         ///<summary>
         /// Add Author
         ///</summary>
-        public async Task<MessageResponse<AuthorDto>> AddAuthor(AuthorDto newAuthor)
+        public async Task<MessageResponse<AddAuthorDto>> AddAuthor(AddAuthorDto newAuthor)
         {
-            MessageResponse<AuthorDto> response = new MessageResponse<AuthorDto>();
+            MessageResponse<AddAuthorDto> response = new MessageResponse<AddAuthorDto>();
 
             try
             {

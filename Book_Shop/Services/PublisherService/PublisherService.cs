@@ -6,6 +6,7 @@ using AutoMapper;
 using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos.Publisher;
+using Microsoft.EntityFrameworkCore;
 
 namespace Book_Shop.Services.PublisherService
 {
@@ -23,9 +24,9 @@ namespace Book_Shop.Services.PublisherService
         ///<summary>
         /// Add Publisher
         ///</summary>
-        public async Task<MessageResponse<PublisherDto>> AddPublisher(PublisherDto newPublisher)
+        public async Task<MessageResponse<AddPublisherDto>> AddPublisher(AddPublisherDto newPublisher)
         {
-            MessageResponse<PublisherDto> response = new MessageResponse<PublisherDto>();
+            MessageResponse<AddPublisherDto> response = new MessageResponse<AddPublisherDto>();
 
             try
             {
@@ -44,6 +45,48 @@ namespace Book_Shop.Services.PublisherService
             {
                 response.IsSuccess = false;
                 response.Message = $"Something went wrong : {ex.Message}";
+            }
+
+            return response;
+        }
+
+        ///<summary>
+        /// Get Publisher with Books and Authors by Id
+        ///</summary>
+        public async Task<MessageResponse<GetPublisherWithBooksAndAuthorsDto>> GetPublisherWithBooksAndAuthors(int id)
+        {
+            MessageResponse<GetPublisherWithBooksAndAuthorsDto> response = new MessageResponse<GetPublisherWithBooksAndAuthorsDto>();
+            try
+            {
+                var dbPublisher = await _db.Publishers.Where(x => x.Id.Equals(id)).Select(publisher =>
+                    new GetPublisherWithBooksAndAuthorsDto()
+                    {
+                        Name =  publisher.Name,
+                        BookAuthors = publisher.Books.Select(n => new BookAuthorDto()
+                        {
+                            BookName = n.Title,
+                            BookAuthors = n.Book_Authors.Select(a => a.Author.FullName).ToList()
+                            
+                        }).ToList(),
+                        
+                    }).FirstOrDefaultAsync();
+                if (dbPublisher != null)
+                {
+                    response.Data = _mapper.Map<GetPublisherWithBooksAndAuthorsDto>(dbPublisher);
+                    response.IsSuccess = true;
+                    response.Message = "Publisher with Books and Authors fetched successful.";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "No Publisher record found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Something went wrong : {ex.Message}";
+
             }
 
             return response;

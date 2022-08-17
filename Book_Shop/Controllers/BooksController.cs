@@ -39,7 +39,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddBookWithAuthors([FromBody] BookDto request)
+        public async Task<IActionResult> AddBookWithAuthors([FromBody] AddBookWithAuthorsDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -54,9 +54,13 @@ namespace Book_Shop.Controllers
         ///</summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllBooks()
         {
             var response = await _bookService.GetAllBooks();
+            if (response == null)
+                return NotFound();
             return Ok(response);
         }
 
@@ -66,6 +70,7 @@ namespace Book_Shop.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBook(int id)
         {
             var response = await _bookService.GetBookWithAuthorsById(id);
@@ -80,6 +85,7 @@ namespace Book_Shop.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] UpdateBookDto request)
         {
             var response = await _bookService.UpdateBook(id, request);
@@ -92,13 +98,14 @@ namespace Book_Shop.Controllers
         ///Delete Book
         ///</summary>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var response = await _bookService.DeleteBook(id);
             if (response == null || !response.IsSuccess || response.Data == null)
-                return NotFound(response);
+                return BadRequest(response);
             return Ok(response);
         }
     }

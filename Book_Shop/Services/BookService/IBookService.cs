@@ -11,11 +11,11 @@ namespace Book_Shop.Services.BookService
 {
     public interface IBookService
     {
-        Task<MessageResponse<BookDto>> AddBookWithAuthors(BookDto newBook);
+        Task<MessageResponse<BookDto>> AddBookWithAuthors(AddBookWithAuthorsDto newBook);
 
         Task<MessageResponse<List<BookDto>>> GetAllBooks();
 
-        Task<MessageResponse<AddBookWithAuthorsDto>> GetBookWithAuthorsById(int id);
+        Task<MessageResponse<GetBookWithAuthorsDto>> GetBookWithAuthorsById(int id);
 
         Task<MessageResponse<UpdateBookDto>> UpdateBook(int id, UpdateBookDto updateBook);
 

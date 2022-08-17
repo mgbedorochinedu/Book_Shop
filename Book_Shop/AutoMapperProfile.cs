@@ -7,6 +7,7 @@ using Book_Shop.Data.Models;
 using Book_Shop.Dtos;
 using Book_Shop.Dtos.Author;
 using Book_Shop.Dtos.Book;
+using Book_Shop.Dtos.Publisher;
 
 namespace Book_Shop
 {
@@ -15,9 +16,11 @@ namespace Book_Shop
         public AutoMapperProfile()
         {
             CreateMap<Book, BookDto>().ReverseMap();
-            CreateMap<Book, UpdateBookDto>().ReverseMap();
             CreateMap<Book, AddBookWithAuthorsDto>().ReverseMap();
+            CreateMap<Book, UpdateBookDto>().ReverseMap();
+            CreateMap<Book, GetBookWithAuthorsDto>().ReverseMap();
             CreateMap<Author, GetAuthorWithBooks>().ReverseMap();
+            CreateMap<Publisher, GetPublisherWithBooksAndAuthorsDto>().ReverseMap();
 
         }
 

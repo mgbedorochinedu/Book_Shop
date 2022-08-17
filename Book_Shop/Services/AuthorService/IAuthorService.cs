@@ -9,7 +9,7 @@ namespace Book_Shop.Services.AuthorService
 {
     public interface IAuthorService
     {
-        Task<MessageResponse<AuthorDto>> AddAuthor(AuthorDto newAuthor);
+        Task<MessageResponse<AddAuthorDto>> AddAuthor(AddAuthorDto newAuthor);
 
         Task<MessageResponse<GetAuthorWithBooks>> GetAuthorWithBooks(int id);
     }
