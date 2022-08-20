@@ -88,8 +88,43 @@ namespace Book_Shop.Services.PublisherService
                 response.Message = $"Something went wrong : {ex.Message}";
 
             }
+            return response;
+        }
+
+        ///<summary>
+        ///Delete Publisher
+        ///</summary>
+        public async Task<MessageResponse<PublisherDto>> DeletePublisher(int id)
+        {
+            MessageResponse<PublisherDto> response = new MessageResponse<PublisherDto>();
+            try
+            {
+                Publisher dbPublisher = await _db.Publishers.FirstOrDefaultAsync(x => x.Id.Equals(id));
+                if (dbPublisher != null)
+                {
+                     _db.Publishers.Remove(dbPublisher);
+                     await _db.SaveChangesAsync();
+                    response.Data = _mapper.Map<PublisherDto>(dbPublisher);
+                    response.IsSuccess = true;
+                    response.Message = "Deleted Publisher";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Publisher not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Something went wrong : {ex.Message}";
+            }
 
             return response;
         }
+
+
+      
+        
     }
 }

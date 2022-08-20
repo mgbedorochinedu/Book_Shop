@@ -21,6 +21,7 @@ namespace Book_Shop
             CreateMap<Book, GetBookWithAuthorsDto>().ReverseMap();
             CreateMap<Author, GetAuthorWithBooks>().ReverseMap();
             CreateMap<Publisher, GetPublisherWithBooksAndAuthorsDto>().ReverseMap();
+            CreateMap<Publisher, PublisherDto>().ReverseMap();
 
         }
 

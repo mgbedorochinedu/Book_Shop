@@ -54,6 +54,17 @@ namespace Book_Shop.Controllers
 
         }
 
+        ///<summary>
+        /// Delete Publisher
+        ///</summary>
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeletePublisher(int id)
+        {
+            var response = await _publisherService.DeletePublisher(id);
+            if (response == null) return BadRequest();
+            return Ok(response);
+        }
+
 
     }
 }
