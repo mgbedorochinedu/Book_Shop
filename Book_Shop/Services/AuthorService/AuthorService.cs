@@ -74,7 +74,7 @@ namespace Book_Shop.Services.AuthorService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Author not found";
+                    response.Message = $"No Author with id: {id} found";
                 }
 
             }

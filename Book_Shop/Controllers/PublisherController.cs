@@ -35,13 +35,13 @@ namespace Book_Shop.Controllers
                 return BadRequest(ModelState);
             }
             var response = await _publisherService.AddPublisher(request);
-            return Ok(response);
+            return Created(nameof(AddPublisher), response);
         }
 
         ///<summary>
         /// Get Publisher with Books and Authors by Id
         ///</summary>
-        [HttpGet]
+        [HttpGet("get-publisher-with-books-and-authors/{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,8 +51,23 @@ namespace Book_Shop.Controllers
             if (response == null)
                 return NotFound();
             return Ok(response);
-
         }
+
+        ///<summary>
+        /// Get Publisher by Id
+        ///</summary>
+        [HttpGet("get-publisher-by-id/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPublisherById(int id)
+        {
+            var response = await _publisherService.GetPublisherById(id);
+            if (response == null)
+                return NotFound();
+            return Ok(response);
+        }
+
 
         ///<summary>
         /// Delete Publisher

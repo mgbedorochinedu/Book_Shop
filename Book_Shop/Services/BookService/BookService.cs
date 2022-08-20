@@ -131,7 +131,7 @@ namespace Book_Shop.Services.BookService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Book not found";
+                    response.Message = $"No Book with id: {id} found";
                 }
             }
             catch (Exception ex)
@@ -173,7 +173,7 @@ namespace Book_Shop.Services.BookService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Book not found.";
+                    response.Message = $"No Book with id: {id} found.";
                 }
             }
             catch (Exception ex)
@@ -206,7 +206,7 @@ namespace Book_Shop.Services.BookService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Book not found.";
+                    response.Message = $"No Book with id: {id} found.";
                 }
             }
             catch (Exception ex)

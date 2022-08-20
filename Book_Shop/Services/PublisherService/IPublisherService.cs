@@ -13,6 +13,8 @@ namespace Book_Shop.Services.PublisherService
 
         Task<MessageResponse<GetPublisherWithBooksAndAuthorsDto>> GetPublisherWithBooksAndAuthors(int id);
 
+        Task<MessageResponse<PublisherDto>> GetPublisherById(int id);
+
         Task<MessageResponse<PublisherDto>> DeletePublisher(int id);
 
     }

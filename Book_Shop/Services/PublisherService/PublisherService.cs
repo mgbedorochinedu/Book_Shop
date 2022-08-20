@@ -79,7 +79,7 @@ namespace Book_Shop.Services.PublisherService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "No Publisher record found.";
+                    response.Message = $"No Publisher record with id: {id} found.";
                 }
             }
             catch (Exception ex)
@@ -90,6 +90,39 @@ namespace Book_Shop.Services.PublisherService
             }
             return response;
         }
+
+
+
+        ///<summary>
+        ///Get Publisher By Id
+        ///</summary>
+        public async Task<MessageResponse<PublisherDto>> GetPublisherById(int id)
+        {
+            MessageResponse<PublisherDto> response = new MessageResponse<PublisherDto>();
+            try
+            {
+                Publisher dbPublisher = await _db.Publishers.FirstOrDefaultAsync(x => x.Id.Equals(id));
+                if (dbPublisher != null)
+                {
+                    response.Data = _mapper.Map<PublisherDto>(dbPublisher);
+                    response.IsSuccess = true;
+                    response.Message = "Publisher fetched successful.";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = $"Publisher with id: {id} not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = $"Something went wrong : {ex.Message}";
+            }
+
+            return response;
+        }
+
 
         ///<summary>
         ///Delete Publisher
@@ -111,7 +144,7 @@ namespace Book_Shop.Services.PublisherService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = "Publisher not found.";
+                    response.Message = $"No Publisher with id: {id} found.";
                 }
             }
             catch (Exception ex)
