@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Book_Shop.Data;
+using Book_Shop.ServiceExtensions;
 using Book_Shop.Services.AuthorService;
 using Book_Shop.Services.BookService;
 using Book_Shop.Services.PublisherService;
@@ -108,6 +109,8 @@ namespace Book_Shop
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.ConfigureExceptionHandler();
 
             app.UseEndpoints(endpoints =>
             {

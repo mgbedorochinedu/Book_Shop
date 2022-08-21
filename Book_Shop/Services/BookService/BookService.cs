@@ -173,7 +173,7 @@ namespace Book_Shop.Services.BookService
                 else
                 {
                     response.IsSuccess = false;
-                    response.Message = $"No Book with id: {id} found.";
+                    response.Message = "Unable to update Book. The submitted data is Invalid.";
                 }
             }
             catch (Exception ex)
