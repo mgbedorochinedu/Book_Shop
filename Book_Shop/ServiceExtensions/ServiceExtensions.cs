@@ -6,6 +6,7 @@ using Book_Shop.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Book_Shop.ServiceExtensions
 {
@@ -19,6 +20,8 @@ namespace Book_Shop.ServiceExtensions
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    var contextRequest = context.Features.Get<IHttpRequestFeature>();
+
                     if (contextFeature != null)
                     {
                         // Log.Error($"Something went wrong : {contextFeature.Error}");
@@ -26,12 +29,14 @@ namespace Book_Shop.ServiceExtensions
                         await context.Response.WriteAsync(new Error
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = $"Internal Server Error. Please try Again Later."
+                            Message = "Internal Server Error. Please Try Again Later.",
+                            //Path = contextRequest.Path
                         }.ToString());
                     }
                 });
-
             });
         }
+
+
     }
 }
