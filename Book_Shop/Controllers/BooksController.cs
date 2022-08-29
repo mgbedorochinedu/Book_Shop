@@ -8,6 +8,7 @@ using Book_Shop.Data;
 using Book_Shop.Dtos;
 using Book_Shop.Dtos.Book;
 using Book_Shop.Services.BookService;
+using Microsoft.Extensions.Logging;
 
 namespace Book_Shop.Controllers
 {
@@ -17,11 +18,13 @@ namespace Book_Shop.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor)
+        public BooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor, ILogger<BooksController> logger)
         {
             _bookService = bookService;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
         //IP Address
@@ -58,6 +61,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllBooks()
         {
+            _logger.LogInformation("Get all Publisher Log");
             var response = await _bookService.GetAllBooks();
             if (response == null)
                 return NotFound();

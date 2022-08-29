@@ -8,6 +8,7 @@ using Book_Shop.Data.Models;
 using Book_Shop.Dtos;
 using Book_Shop.Dtos.Book;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Book_Shop.Services.BookService
 {
@@ -94,7 +95,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                // response.Message = $"Something went wrong : {ex.Message}";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
