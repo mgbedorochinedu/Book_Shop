@@ -96,7 +96,7 @@ namespace Book_Shop.Services.BookService
             {
                 response.IsSuccess = false;
                 // response.Message = $"Something went wrong : {ex.Message}";
-                Log.Error($"Something went wrong : {ex.Message}");
+                //Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
