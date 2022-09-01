@@ -65,7 +65,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
@@ -95,8 +96,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                // response.Message = $"Something went wrong : {ex.Message}";
-                //Log.Error($"Something went wrong : {ex.Message}");
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
@@ -139,7 +140,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
@@ -181,7 +183,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
@@ -214,7 +217,8 @@ namespace Book_Shop.Services.BookService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;

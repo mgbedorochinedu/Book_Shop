@@ -46,6 +46,7 @@ namespace Book_Shop.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError($"Invalid POST attempt in {nameof(AddBookWithAuthors)} :- {ModelState} - {ModelState.IsValid}");
                 return BadRequest(ModelState);
             }
             var response = await _bookService.AddBookWithAuthors(request);
@@ -61,7 +62,6 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllBooks()
         {
-            _logger.LogInformation("Get all Publisher Log");
             var response = await _bookService.GetAllBooks();
             if (response == null)
                 return NotFound();
@@ -77,6 +77,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBook(int id)
         {
+            _logger.LogInformation($"Attempt in {nameof(GetBook)}");
             var response = await _bookService.GetBookWithAuthorsById(id);
             if (response.Data == null || !response.IsSuccess)
                 return NotFound(response);
@@ -92,9 +93,13 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] UpdateBookDto request)
         {
+            _logger.LogInformation($"Attempt in {nameof(UpdateBook)}");
             var response = await _bookService.UpdateBook(id, request);
             if (response.Data == null || !response.IsSuccess || id < 1)
+            {
+                _logger.LogError($"Invalid Update attempt in {nameof(UpdateBook)}");
                 return BadRequest(response);
+            }
             return Ok(response);
         }
 
@@ -107,9 +112,13 @@ namespace Book_Shop.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
+            _logger.LogInformation($"Attempt in {nameof(DeleteBook)}");
             var response = await _bookService.DeleteBook(id);
             if (response == null || !response.IsSuccess || response.Data == null)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteBook)}");
                 return BadRequest(response);
+            }
             return Ok(response);
         }
     }

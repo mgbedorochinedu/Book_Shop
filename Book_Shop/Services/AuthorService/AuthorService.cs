@@ -7,6 +7,7 @@ using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos.Author;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace Book_Shop.Services.AuthorService
 {
@@ -44,7 +45,8 @@ namespace Book_Shop.Services.AuthorService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;
@@ -81,7 +83,8 @@ namespace Book_Shop.Services.AuthorService
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = $"Something went wrong : {ex.Message}";
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
             }
 
             return response;

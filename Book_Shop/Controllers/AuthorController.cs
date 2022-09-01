@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Book_Shop.Dtos.Author;
 using Book_Shop.Services.AuthorService;
+using Microsoft.Extensions.Logging;
 
 namespace Book_Shop.Controllers
 {
@@ -14,10 +15,12 @@ namespace Book_Shop.Controllers
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;
+        private readonly ILogger<AuthorController> _logger;
 
-        public AuthorController(IAuthorService authorService)
+        public AuthorController(IAuthorService authorService, ILogger<AuthorController> logger)
         {
             _authorService = authorService;
+            _logger = logger;
         }
 
         ///<summary>
@@ -31,6 +34,7 @@ namespace Book_Shop.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError($"Invalid POST attempt in {nameof(AddAuthor)} :- {ModelState} - {ModelState.IsValid}");
                 return BadRequest(ModelState);
             }
             var response = await _authorService.AddAuthor(request);
@@ -46,6 +50,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAuthorWithBooks(int id)
         {
+            _logger.LogInformation($"Attempt in {nameof(GetAuthorWithBooks)}");
             var response = await _authorService.GetAuthorWithBooks(id);
             if (response.Data == null || !response.IsSuccess || id < 1)
                 return NotFound(response);

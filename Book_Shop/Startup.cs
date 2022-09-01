@@ -39,6 +39,11 @@ namespace Book_Shop
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             //Configure the Services
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAuthorService, AuthorService>();
@@ -95,7 +100,7 @@ namespace Book_Shop
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -110,7 +115,7 @@ namespace Book_Shop
 
             app.UseAuthorization();
 
-            app.ConfigureExceptionHandler();
+            app.ConfigureExceptionHandler(loggerFactory);
 
             app.UseEndpoints(endpoints =>
             {

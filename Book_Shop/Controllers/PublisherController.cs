@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Book_Shop.Dtos.Publisher;
 using Book_Shop.Services.PublisherService;
+using Microsoft.Extensions.Logging;
 
 namespace Book_Shop.Controllers
 {
@@ -14,10 +15,12 @@ namespace Book_Shop.Controllers
     public class PublisherController : ControllerBase
     {
         private readonly IPublisherService _publisherService;
+        private readonly ILogger<PublisherController> _logger;
 
-        public PublisherController(IPublisherService publisherService)
+        public PublisherController(IPublisherService publisherService, ILogger<PublisherController> logger)
         {
             _publisherService = publisherService;
+            _logger = logger;
         }
 
 
@@ -32,6 +35,7 @@ namespace Book_Shop.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError($"Invalid POST attempt in {nameof(AddPublisher)} :- {ModelState} - {ModelState.IsValid}");
                 return BadRequest(ModelState);
             }
             var response = await _publisherService.AddPublisher(request);
@@ -47,6 +51,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PublisherWithBooksAndAuthors(int id)
         {
+            _logger.LogInformation($"Attempt in {nameof(PublisherWithBooksAndAuthors)}");
             var response = await _publisherService.GetPublisherWithBooksAndAuthors(id);
             if (response == null)
                 return NotFound();
@@ -62,6 +67,7 @@ namespace Book_Shop.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPublisherById(int id)
         {
+            _logger.LogInformation($"Attempt in {nameof(GetPublisherById)}");
             var response = await _publisherService.GetPublisherById(id);
             if (response == null)
                 return NotFound();
@@ -76,7 +82,11 @@ namespace Book_Shop.Controllers
         public async Task<IActionResult> DeletePublisher(int id)
         {
             var response = await _publisherService.DeletePublisher(id);
-            if (response == null) return BadRequest();
+            if (response == null)
+            {
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeletePublisher)}");
+                return BadRequest();
+            }
             return Ok(response);
         }
 
