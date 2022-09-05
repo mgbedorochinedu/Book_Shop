@@ -12,12 +12,12 @@ namespace Book_Shop.Controllers
 {
     [Route("api/authors")]
     [ApiController]
-    public class AuthorController : ControllerBase
+    public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
-        private readonly ILogger<AuthorController> _logger;
+        private readonly ILogger<AuthorsController> _logger;
 
-        public AuthorController(IAuthorService authorService, ILogger<AuthorController> logger)
+        public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger)
         {
             _authorService = authorService;
             _logger = logger;
