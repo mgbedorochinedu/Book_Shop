@@ -90,6 +90,19 @@ namespace Book_Shop.Controllers
             return Ok(response);
         }
 
+        ///<summary>
+        /// Get List of all Publishers
+        ///</summary>
+        /// 
+        [HttpGet("get-all-publishers")]
+        public async Task<IActionResult> GetAllPublishers()
+        {
+            var response = await _publisherService.GetAllPublishers();
+            if (response == null)
+                return NotFound();
+            return Ok(response);
+        }
+
 
     }
 }

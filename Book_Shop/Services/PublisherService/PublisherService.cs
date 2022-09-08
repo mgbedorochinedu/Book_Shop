@@ -160,8 +160,35 @@ namespace Book_Shop.Services.PublisherService
             return response;
         }
 
+        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers()
+        {
+            MessageResponse<List<PublisherDto>> response = new MessageResponse<List<PublisherDto>>();
 
-      
-        
+            try
+            {
+                List<Publisher> dbPublisher = await _db.Publishers.ToListAsync();
+                if (dbPublisher == null || dbPublisher.Count < 0)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "No Publisher found";
+                    response.Data = null;
+                }
+                else
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Publishers fetched successful";
+                    response.Data = _mapper.Map<List<PublisherDto>>(dbPublisher);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
+                Log.Error($"Something went wrong : {ex.Message}");
+            }
+            return response;
+
+        }
+
     }
 }
