@@ -160,13 +160,25 @@ namespace Book_Shop.Services.PublisherService
             return response;
         }
 
-        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers()
+        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy)
         {
             MessageResponse<List<PublisherDto>> response = new MessageResponse<List<PublisherDto>>();
 
             try
             {
                 List<Publisher> dbPublisher = await _db.Publishers.ToListAsync();
+                if (!string.IsNullOrEmpty(sortBy))
+                {
+                    switch (sortBy)
+                    {
+                        case "name_desc":
+                            dbPublisher = dbPublisher.OrderByDescending(n => n.Name).ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
                 if (dbPublisher == null || dbPublisher.Count < 0)
                 {
                     response.IsSuccess = false;
