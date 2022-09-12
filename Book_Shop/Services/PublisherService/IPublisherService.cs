@@ -17,7 +17,7 @@ namespace Book_Shop.Services.PublisherService
 
         Task<MessageResponse<PublisherDto>> DeletePublisher(int id);
 
-        Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy);
+        Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy, string searchString);
 
     }
 }

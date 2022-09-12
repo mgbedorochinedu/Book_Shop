@@ -160,7 +160,7 @@ namespace Book_Shop.Services.PublisherService
             return response;
         }
 
-        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy)
+        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy, string searchString)
         {
             MessageResponse<List<PublisherDto>> response = new MessageResponse<List<PublisherDto>>();
 
@@ -177,6 +177,11 @@ namespace Book_Shop.Services.PublisherService
                         default:
                             break;
                     }
+                }
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    dbPublisher = dbPublisher.Where(x => x.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
                 }
 
                 if (dbPublisher == null || dbPublisher.Count < 0)
