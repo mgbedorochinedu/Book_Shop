@@ -6,6 +6,7 @@ using AutoMapper;
 using Book_Shop.Data;
 using Book_Shop.Data.Models;
 using Book_Shop.Dtos.Publisher;
+using Book_Shop.Paging;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -160,13 +161,15 @@ namespace Book_Shop.Services.PublisherService
             return response;
         }
 
-        public async Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy, string searchString)
-        {
-            MessageResponse<List<PublisherDto>> response = new MessageResponse<List<PublisherDto>>();
 
-            try
-            {
-                List<Publisher> dbPublisher = await _db.Publishers.ToListAsync();
+        ///<summary>
+        ///Get All Publisher - Sorted by desc Order, Filtering and Pagination
+        ///</summary>
+        public async Task<List<Publisher>> GetAllPublishers(string sortBy, string searchString, int? pageNumber)
+        {
+
+            List<Publisher> dbPublisher = await _db.Publishers.ToListAsync();
+
                 if (!string.IsNullOrEmpty(sortBy))
                 {
                     switch (sortBy)
@@ -184,26 +187,12 @@ namespace Book_Shop.Services.PublisherService
                     dbPublisher = dbPublisher.Where(x => x.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
                 }
 
-                if (dbPublisher == null || dbPublisher.Count < 0)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "No Publisher found";
-                    response.Data = null;
-                }
-                else
-                {
-                    response.IsSuccess = true;
-                    response.Message = "Publishers fetched successful";
-                    response.Data = _mapper.Map<List<PublisherDto>>(dbPublisher);
-                }
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
-                Log.Error($"Something went wrong : {ex.Message}");
-            }
-            return response;
+                int pageSize = 5;
+
+                dbPublisher = PaginatedList<Publisher>.Create(dbPublisher.AsQueryable(), pageNumber ?? 1, pageSize);
+
+
+            return dbPublisher;
 
         }
 

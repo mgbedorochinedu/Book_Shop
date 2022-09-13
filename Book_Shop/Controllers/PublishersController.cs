@@ -95,9 +95,9 @@ namespace Book_Shop.Controllers
         ///</summary>
         /// 
         [HttpGet("get-all-publishers")]
-        public async Task<IActionResult> GetAllPublishers(string sortBy, string searchString)
+        public async Task<IActionResult> GetAllPublishers(string sortBy, string searchString, int pageNumber)
         {
-            var response = await _publisherService.GetAllPublishers(sortBy, searchString);
+            var response = await _publisherService.GetAllPublishers(sortBy, searchString, pageNumber);
             if (response == null)
                 return NotFound();
             return Ok(response);

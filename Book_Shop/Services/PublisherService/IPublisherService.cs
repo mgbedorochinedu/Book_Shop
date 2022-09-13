@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Book_Shop.Data;
+using Book_Shop.Data.Models;
 using Book_Shop.Dtos.Publisher;
 
 namespace Book_Shop.Services.PublisherService
@@ -17,7 +18,7 @@ namespace Book_Shop.Services.PublisherService
 
         Task<MessageResponse<PublisherDto>> DeletePublisher(int id);
 
-        Task<MessageResponse<List<PublisherDto>>> GetAllPublishers(string sortBy, string searchString);
+        Task<List<Publisher>> GetAllPublishers(string sortBy, string searchString, int? pageNumber);
 
     }
 }
