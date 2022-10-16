@@ -182,7 +182,7 @@ namespace Book_Shop.Services.PublisherService
                     }
                 }
 
-                if (!string.IsNullOrEmpty(searchString))
+                if (!string.IsNullOrEmpty(searchString) || !string.IsNullOrWhiteSpace(searchString))
                 {
                     dbPublisher = dbPublisher.Where(x => x.Name.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
                 }

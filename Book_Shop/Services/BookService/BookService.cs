@@ -66,7 +66,7 @@ namespace Book_Shop.Services.BookService
             {
                 response.IsSuccess = false;
                 response.Message = "Something Went Wrong: Internal Server Error. Please Try Again Later.";
-                Log.Error($"Something went wrong : {ex.Message}");
+                Log.Error($"Something went wrong : {ex.GetType().Name}:- {ex.Message}");
             }
 
             return response;
@@ -81,7 +81,7 @@ namespace Book_Shop.Services.BookService
             try
             {
                 List<Book> book = await _db.Books.ToListAsync();
-                if (book != null)
+                if (book != null && book.Count > 0)
                 {
                     response.Data = _mapper.Map<List<BookDto>>(book);
                     response.IsSuccess = true;
